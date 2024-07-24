@@ -1,0 +1,8 @@
+Flask
+requests
+pytesseract
+Pillow
+PyPDF2
+opencv-python
+numpy
+google-generativeai
