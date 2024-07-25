@@ -1,8 +1,16 @@
+# Flask
+# requests
+# pytesseract
+# Pillow
+# PyPDF2
+# opencv-python
+# numpy
+# google-generativeai
 Flask
-requests
+numpy
 pytesseract
 Pillow
 PyPDF2
-opencv-python
-numpy
+requests
 google-generativeai
+opencv-python-headless

@@ -118,7 +118,7 @@ GOOGLE_API_KEY = "AIzaSyB1tpMueN_3bPbnQGsNOYP7s_NvzrUEtcM"
 genai.configure(api_key=GOOGLE_API_KEY)
 model = genai.GenerativeModel('gemini-1.5-pro-latest')
 
-@app.route('/api/process', methods=['POST'])
+@app.route('/process', methods=['POST'])
 def process():
     data = request.get_json()
     file_url = data.get('url')
@@ -151,5 +151,5 @@ def process():
     result = ''.join([p.text for p in response.candidates[0].content.parts])
     return jsonify(result)
 
-if __name__ == "__main__":
-    app.run()
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)
