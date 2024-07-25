@@ -10,7 +10,7 @@ import requests
 from io import BytesIO
 
 app = Flask(__name__)
-
+app.debug = True
 # Function to download file from URL
 def download_file(url):
     print(f"Downloading file from URL: {url}")
@@ -120,36 +120,40 @@ model = genai.GenerativeModel('gemini-1.5-pro-latest')
 
 @app.route('/process', methods=['POST'])
 def process():
-    data = request.get_json()
-    file_url = data.get('url')
-    all_extracted_text = process_file(file_url)
+    try:
+        data = request.get_json()
+        file_url = data.get('url')
+        all_extracted_text = process_file(file_url)
 
-    prompt = f"""
-    Please read and understand the provided context and extract all the tested parameters along with their values. Ensure that the parameters and their values are presented in a JSON object format.
+        prompt = f"""
+        Please read and understand the provided context and extract all the tested parameters along with their values. Ensure that the parameters and their values are presented in a JSON object format.
 
-    Context:
-    {all_extracted_text}
+        Context:
+        {all_extracted_text}
 
-    Task:
-    1. Identify all the test parameters mentioned in the context.
-    2. Extract the corresponding values for each parameter.
-    3. Format the extracted parameters and values as a JSON object.
+        Task:
+        1. Identify all the test parameters mentioned in the context.
+        2. Extract the corresponding values for each parameter.
+        3. Format the extracted parameters and values as a JSON object.
 
-    Example format:
-    {{
-        "all_relevant_information_related_to_hospital/clinic/lab": "value",
-        "all_relevant_information_related_to_patient": "value",
-        "parameter1": "value1",
-        "parameter2": "value2",
-        ...
-    }}
+        Example format:
+        {{
+            "all_relevant_information_related_to_hospital/clinic/lab": "value",
+            "all_relevant_information_related_to_patient": "value",
+            "parameter1": "value1",
+            "parameter2": "value2",
+            ...
+        }}
 
-    Extracted parameters and values:
-    """
+        Extracted parameters and values:
+        """
 
-    response = model.generate_content(prompt)
-    result = ''.join([p.text for p in response.candidates[0].content.parts])
-    return jsonify(result)
+        response = model.generate_content(prompt)
+        result = ''.join([p.text for p in response.candidates[0].content.parts])
+        return jsonify(result)
+    except Exception as e:
+        print(f"Error processing file: {e}")
+        return jsonify("Error processing file")
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
