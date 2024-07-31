@@ -1,4 +1,12 @@
+# Ignore all files by default
+*
+
+# But include these files and directories
+!api/
+!requirements.txt
+!vercel.json
+
+# Ignore specific files or directories
 *.pyc
 __pycache__/
-*.pyo
-*.pyd
+node_modules/
