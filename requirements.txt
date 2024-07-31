@@ -1,8 +1,8 @@
 Flask==2.0.1
 pytesseract==0.3.8
 PyPDF2==1.26.0
-opencv-python==4.5.2.52
+opencv-python
 numpy==1.21.0
 Pillow==8.2.0
-google-generativeai==0.1.0  # Placeholder for actual package name
+google-generativeai==0.1.0
 requests==2.25.1
