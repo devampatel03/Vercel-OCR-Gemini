@@ -11,16 +11,12 @@ from io import BytesIO
 
 app = Flask(__name__)
 app.debug = True
-
-# Initialize Google Generative AI
-GOOGLE_API_KEY = os.getenv("AIzaSyB1tpMueN_3bPbnQGsNOYP7s_NvzrUEtcM")
-genai.configure(api_key=GOOGLE_API_KEY)
-model = genai.GenerativeModel('gemini-1.5-pro-latest')
-
 # Function to download file from URL
 def download_file(url):
+    print(f"Downloading file from URL: {url}")
     response = requests.get(url)
     if response.status_code == 200:
+        print("File downloaded successfully.")
         content_type = response.headers.get('content-type')
         return BytesIO(response.content), content_type
     else:
@@ -34,7 +30,7 @@ def extract_text_from_pdf(pdf_file):
         num_pages = len(pdf_reader.pages)
         for page_num in range(num_pages):
             page = pdf_reader.pages[page_num]
-            text += page.extract_text() or ""
+            text += page.extract_text() or ""  # Ensure text is not None
     except Exception as e:
         print(f"Error extracting text from PDF: {e}")
     return text
@@ -97,6 +93,7 @@ def extract_text_from_image(image_file):
         text_edges = pytesseract.image_to_string(edges)
         text_deskewed = pytesseract.image_to_string(deskewed)
 
+        # Combine all extracted texts
         combined_text = "\n".join([text_thresh, text_opened, text_edges, text_deskewed])
     except Exception as e:
         print(f"Error extracting text from image: {e}")
@@ -107,13 +104,21 @@ def extract_text_from_image(image_file):
 def process_file(file_url):
     file, content_type = download_file(file_url)
     if 'pdf' in content_type:
+        print("Processing PDF:", file_url)
         return extract_text_from_pdf(file)
     elif 'image' in content_type:
+        print("Processing Image:", file_url)
         return extract_text_from_image(file)
     else:
+        print("Unsupported file format:", file_url)
         return ""
 
-@app.route('/process', methods=['POST'])
+# Initialize Google Generative AI
+GOOGLE_API_KEY = "AIzaSyB1tpMueN_3bPbnQGsNOYP7s_NvzrUEtcM"
+genai.configure(api_key=GOOGLE_API_KEY)
+model = genai.GenerativeModel('gemini-1.5-pro-latest')
+
+@app.route('/api/process', methods=['POST'])
 def process():
     try:
         data = request.get_json()
@@ -150,5 +155,5 @@ def process():
         print(f"Error processing file: {e}")
         return jsonify("Error processing file")
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run()

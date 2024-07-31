@@ -1,17 +1,8 @@
-# Flask
-# requests
-# pytesseract
-# Pillow
-# PyPDF2
-# opencv-python
-# numpy
-# google-generativeai
-Flask
-numpy
-pytesseract
-Pillow
-PyPDF2
-requests
-google-generativeai
-opencv-python-headless
-gunicorn
+Flask==2.0.1
+pytesseract==0.3.8
+PyPDF2==1.26.0
+opencv-python==4.5.2.52
+numpy==1.21.0
+Pillow==8.2.0
+google-generativeai==0.1.0  # Placeholder for actual package name
+requests==2.25.1
