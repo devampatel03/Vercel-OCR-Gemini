@@ -1,8 +1,7 @@
 Flask
 pytesseract
 PyPDF2
-opencv-python-headless
+opencv-python-headless  # Consider using this lighter version
 numpy
 Pillow
 requests
-google-generativeai  # Ensure this line is included
