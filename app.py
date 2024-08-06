@@ -12,8 +12,8 @@ from io import BytesIO
 app = Flask(__name__)
 app.debug = True
 
-# Initialize Google Generative AI
-GOOGLE_API_KEY = os.getenv("AIzaSyB1tpMueN_3bPbnQGsNOYP7s_NvzrUEtcM")
+
+GOOGLE_API_KEY = os.getenv("YOUR_GOOGLE_API_KEY")
 genai.configure(api_key=GOOGLE_API_KEY)
 model = genai.GenerativeModel('gemini-1.5-pro-latest')
 
